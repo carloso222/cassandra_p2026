@@ -3,9 +3,12 @@ import logging
 import os
 import sys
 
+
 from cassandra.cluster import Cluster
 
 import model
+import time_uuid
+import datetime
 
 # Set logger
 log = logging.getLogger()
@@ -89,22 +92,48 @@ def main():
             model.get_orders_by_customer(session, customer_email)
 
         elif option == 2:
-            pass
+            order_number = get_order_number()
+            model.get_products_by_order(session, order_number)
 
         elif option == 3:
-            pass
+            order_number = get_order_number()
+            model.get_shipments_by_order(session, order_number)
 
         elif option == 4:
-            pass
+            order_number = get_order_number()
+            start_dt = datetime.datetime(2024, 1, 1)
+            end_dt   = datetime.datetime(2025, 12, 31)
+            start_uuid = time_uuid.TimeUUID.with_timestamp(time_uuid.mkutime(start_dt))
+            end_uuid   = time_uuid.TimeUUID.with_timestamp(time_uuid.mkutime(end_dt))
+            model.get_shipments_by_order_date_range(session, order_number, start_uuid, end_uuid)
 
         elif option == 5:
-            pass
+            order_number = get_order_number()
+            status = get_shipment_status()
+            start_dt = datetime.datetime(2024, 1, 1)
+            end_dt   = datetime.datetime(2025, 12, 31)
+            start_uuid = time_uuid.TimeUUID.with_timestamp(time_uuid.mkutime(start_dt))
+            end_uuid   = time_uuid.TimeUUID.with_timestamp(time_uuid.mkutime(end_dt))
+            model.get_shipments_by_order_status(session, order_number, status, start_uuid, end_uuid)
 
         elif option == 6:
-            pass
+            order_number = get_order_number()
+            ship_type = get_shipment_type()
+            start_dt = datetime.datetime(2024, 1, 1)
+            end_dt   = datetime.datetime(2025, 12, 31)
+            start_uuid = time_uuid.TimeUUID.with_timestamp(time_uuid.mkutime(start_dt))
+            end_uuid   = time_uuid.TimeUUID.with_timestamp(time_uuid.mkutime(end_dt))
+            model.get_shipments_by_order_type(session, order_number, ship_type, start_uuid, end_uuid)
 
         elif option == 7:
-            pass
+            order_number = get_order_number()
+            ship_type = get_shipment_type()
+            status = get_shipment_status()
+            start_dt = datetime.datetime(2024, 1, 1)
+            end_dt   = datetime.datetime(2025, 12, 31)
+            start_uuid = time_uuid.TimeUUID.with_timestamp(time_uuid.mkutime(start_dt))
+            end_uuid   = time_uuid.TimeUUID.with_timestamp(time_uuid.mkutime(end_dt))
+            model.get_shipments_by_order_type_status(session, order_number, ship_type, status, start_uuid, end_uuid)
 
         elif option == 8:
             customer_email = set_customer_email()
